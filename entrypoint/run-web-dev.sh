@@ -1,0 +1,11 @@
+#!/bin/bash
+DEVELOP=${DEVELOP:-1}
+AUTORELOAD=${AUTORELOAD:-1}
+PORT=${PORT:-8000}
+FLASK_DEBUGGER=${FLASK_DEBUGGER:-0}
+
+if [[ $DEVELOP == "1" ]]; then
+  FLASK_DEBUGGER=$FLASK_DEBUGGER FLASK_AUTORELOAD=$AUTORELOAD ./manage.py runserver -p ${PORT}
+else
+  /home/app/run-web.sh
+fi

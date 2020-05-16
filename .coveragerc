@@ -1,0 +1,8 @@
+[run]
+omit =
+    alvinchow_service/commands/*
+    alvinchow_service/test/*
+    alvinchow_service/api/grpc/protobuf*
+    alvinchow_service/api/grpc/setup*.py
+    */test_*.py
+    *version*.py
