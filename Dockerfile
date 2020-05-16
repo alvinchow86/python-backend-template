@@ -8,7 +8,7 @@ RUN mkdir -p /home/app
 
 # Install expensive things
 RUN \
-  apk add --no-cache bash postgresql-client \
+  apk add --no-cache bash postgresql-client nginx \
   && apk add --no-cache --virtual native-deps python3-dev g++ linux-headers git \
   && pip install pip==20.1 \
   && apk add --no-cache libstdc++ \
