@@ -1,0 +1,97 @@
+version: 2.1
+
+executors:
+  app:
+    working_directory: ~/app
+    docker:
+      - image: circleci/python:3.8.1
+        environment:
+         PIPENV_VENV_IN_PROJECT: true
+         DATABASE_URL: postgres://root:@localhost/alvinchow_service_test
+         REDIS_URL: redis://localhost:6379
+
+      - image: circleci/postgres:11-alpine-ram
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: alvinchow_service_test
+      - image: circleci/redis:5.0.3
+
+
+commands:
+  unit_tests_build:
+    description: "Install and build the app, anything common for all unit test runs"
+    steps:
+      - checkout  # checkout source code to working directory
+      - run:
+          name: Install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for Postgres
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Wait for Redis
+          command: dockerize -wait tcp://localhost:6379 -timeout 1m
+
+      - restore_cache:
+          keys:
+            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - pip-packages-v1-{{ .Branch }}-
+            - pip-packages-v1-
+      - run:
+          name: Install dependencies
+          command: |
+            pipenv sync --dev
+      - save_cache:
+          paths:
+            - ~/app/.venv
+          key: pip-packages-v3-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: Linting
+          command:
+            pipenv run flake8
+
+# We split into two jobs so we can do the more expensive HTML coverage only for master builds
+jobs:
+  unit-tests:
+    executor: app
+    steps:
+      - unit_tests_build
+      - run:
+          name: Run tests
+          command: |
+              pipenv run python runtests.py --coverage
+
+  unit-tests-with-coverage-html:
+    executor: app
+    steps:
+      - unit_tests_build
+      - run:
+          name: Run tests
+          command: |
+              pipenv run python runtests.py --coverage-html
+              pipenv run coverage-badge -o coverage.svg
+      - store_artifacts:
+          path: ~/app/htmlcov
+      - store_artifacts:
+          path: ~/app/coverage.svg
+
+
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      # Run normal tests for normal branches
+      - unit-tests:
+          filters:
+            branches:
+              ignore: master
+
+      # Also generate HTML coverage report for master commits
+      - unit-tests-with-coverage-html:
+          filters:
+            branches:
+              only:
+                - master

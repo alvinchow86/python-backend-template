@@ -1,0 +1,55 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[[source]]
+name = "fury"
+url = "https://pypi.fury.io/alvinchow86"
+verify_ssl = true
+
+[dev-packages]
+pytest = "~=4.0"
+pytest-mock = "~=3.1"
+freezegun = "~=0.3"
+flake8 = "==3.8"
+pytest-cov = "==2.8.1"
+pytest-alvin = "==0.0.2"
+
+[packages]
+# Core
+apscheduler = "==3.6.3"
+pytz = "==2020.1"
+python-dateutil = "==2.8.1"
+alvin-python-lib = "==0.0.1"
+# Database, Caching
+alembic = "==1.4.2"
+psycopg2-binary = "==2.8.3"
+sqlalchemy = "==1.3.17"
+redis = "==3.5.2"
+sqlalchemy-postgres-bigid = "==0.1.0"
+# Web
+flask = "==1.1.2"
+# Queueing
+celery = {extras = ["redis"],version = "==4.4.2"}
+# gRPC
+Cython = "==0.29.15"
+grpcio = "==1.29.0"
+grpcio-status = "==1.29.0"
+protobuf = "==3.11.3"
+alvin-grpc-lib = "==0.0.1"
+protobuf_serialization = "==0.1.1"
+
+# Monitoring
+sentry-sdk= "==0.14.4"
+blinker = "==1.4"
+scout-apm = "==2.14.1"
+# Other
+click = "~=7.0"
+ipython = "~=7.2"
+watchdog = "==0.9.0"
+rules = "==2.0.1"
+easydict = "==1.9"
+
+[requires]
+python_version = "3.8"

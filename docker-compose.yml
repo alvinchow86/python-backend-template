@@ -1,0 +1,74 @@
+version: '3.5'
+
+x-base: &base
+  build:
+    context: .
+    args:
+      - FURY_AUTH
+  env_file: .dockerenv
+  volumes:
+    - $PWD:/home/app:cached
+  depends_on:
+    - postgres
+    - redis
+  networks:
+    - default
+    - internal
+
+services:
+  web:
+    <<: *base
+    ports:
+      - 8000:80
+    container_name: alvinchow_service_web
+    command: /home/app/entrypoint/run-web-dev.sh
+    environment:
+      - PORT=80
+      - DEVELOP
+      - AUTORELOAD
+
+  grpc:
+    <<: *base
+    container_name: alvinchow_service_grpc
+    command: /home/app/entrypoint/run-grpc-dev.sh
+    ports:
+      - 55555:50051
+    environment:
+      - DEVELOP
+      - AUTORELOAD
+
+  worker:
+    <<: *base
+    container_name: alvinchow_service_worker
+    command: /home/app/entrypoint/run-worker-dev.sh
+    environment:
+      - DEVELOP
+
+  scheduler:
+    <<: *base
+    container_name: alvinchow_service_scheduler
+    command: /home/app/entrypoint/run_scheduler.py
+
+  postgres:
+    container_name: alvinchow_service_postgres
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ~/.postgres_data/alvinchow-service:/var/lib/postgresql/data:delegated
+    networks:
+      - internal
+
+  redis:
+    container_name: alvinchow_service_redis
+    image: redis:5-alpine
+    networks:
+      - internal
+
+
+networks:
+  default:
+    external:
+      name: alvinchow
+  internal:
