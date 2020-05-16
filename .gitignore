@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# gRPC
+alvinchow_service/api/grpc/alvinchow_service_protobuf
+alvinchow_service_protobuf_async/
+
+# sed backup thing
+*-E
+# C extensions
+*.so
+
+# Distribution / packaging
+dist
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environments
+.venv
+venv
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+local_config.py
+
+# System stuff
+.DS_Store
+
+# Tests
+htmlcov
+.coverage
