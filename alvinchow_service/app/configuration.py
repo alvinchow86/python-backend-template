@@ -1,12 +1,21 @@
 import os
 
-from alvinchow.lib.appconfig import Configuration
-from alvinchow.lib.appconfig.values import Value, BooleanValue, IntegerValue
+from alvinchow.lib.config import Configuration
+from alvinchow.lib.config.values import Value, BooleanValue, IntegerValue
 
 
 class Base(Configuration):
     DEBUG_LEVEL = Value('INFO')
     ENV = Value('local')
+
+    DOMAIN = Value('alvinchow.localdev')
+    SESSION_COOKIE_DOMAIN = Value()
+    SESSION_COOKIE_SECURE = BooleanValue(False)
+    CSRF_COOKIE_DOMAIN = Value()
+    ROOT_DOMAIN = Value('alvinchow.localdev')
+
+    STATIC_BASE_URL = Value('/static')
+
     DATABASE_URL = Value('postgres://root:@postgres/alvinchow_service')
     REDIS_URL = Value('redis://redis:6379')
 

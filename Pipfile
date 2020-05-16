@@ -30,6 +30,7 @@ sqlalchemy = "==1.3.17"
 redis = "==3.5.2"
 # Web
 flask = "==1.1.2"
+#flask-cors = "==3.0.7"
 # Queueing
 celery = {extras = ["redis"],version = "==4.4.2"}
 
