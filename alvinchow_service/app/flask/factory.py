@@ -6,6 +6,7 @@ from alvinchow_service.api.rest import api
 from alvinchow_service.app import config
 from alvinchow_service.app import initialize
 from alvinchow_service.app.flask.csrf import set_csrf_cookie_on_response, csrf_protect_request
+from alvinchow_service.db import get_session
 # from alvinchow_service.web import web
 from alvinchow_service.api.rest import exceptions
 from alvinchow_service.lib import get_logger
@@ -24,7 +25,7 @@ def create_app():
         )
 
     app.register_blueprint(api, url_prefix='/api')
-    app.register_blueprint(web)
+    # app.register_blueprint(web)
 
     @app.errorhandler(exceptions.APIException)
     def handle_invalid_usage(error):
