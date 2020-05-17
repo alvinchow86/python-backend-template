@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1164267bb39211c2fb01def97abc28f077825d49e9f1e9d7150eccb7017fbcfa"
+            "sha256": "bbec269e2bdb4abb79d8a4fca873805bc0d6110402e079502f5b9e9a70614afc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -30,7 +30,7 @@
         },
         "alvin-python-lib": {
             "hashes": [
-                "sha256:d3fd622cdfc81fd4da12d35269c33faf9a737db852040cf38aa5bed33ab569a0"
+                "sha256:ce13ac4544a01ccf01a52ce6254d71daa05744c764ceb75215be81ff86116b90"
             ],
             "index": "pypi",
             "version": "==0.0.1"
@@ -528,6 +528,14 @@
             ],
             "index": "pypi",
             "version": "==1.3.17"
+        },
+        "sqlalchemy-postgres-bigid": {
+            "hashes": [
+                "sha256:4979e627b242ab9e4bd7c79ff0cbbdd1b179a83bf10d4388529900fe57639f4a",
+                "sha256:9372ea636351e389e5992bb3f2fe99f462a2736b5394151bf7404de182b0d806"
+            ],
+            "index": "pypi",
+            "version": "==0.1.0"
         },
         "traitlets": {
             "hashes": [
