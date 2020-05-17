@@ -19,7 +19,7 @@ services:
   web:
     <<: *base
     ports:
-      - 8888:80
+      - 8000:80
     container_name: alvinchow_service_web
     command: /home/app/entrypoint/run-web-dev.sh
     environment:
@@ -54,8 +54,9 @@ services:
     image: postgres:12-alpine
     environment:
       - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
     volumes:
-      - ~/.postgres_data/example-service:/var/lib/postgresql/data:delegated
+      - ~/.postgres_data/alvinchow-service:/var/lib/postgresql/data:delegated
     networks:
       - internal
 
