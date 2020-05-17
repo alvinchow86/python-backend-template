@@ -27,15 +27,15 @@ services:
       - DEVELOP
       - AUTORELOAD
 
-  # grpc:
-  #   <<: *base
-  #   container_name: alvinchow_service_grpc
-  #   command: /home/app/entrypoint/run-grpc-dev.sh
-  #   ports:
-  #     - 55556:50051
-  #   environment:
-  #     - DEVELOP
-  #     - AUTORELOAD
+  grpc:
+    <<: *base
+    container_name: alvinchow_service_grpc
+    command: /home/app/entrypoint/run-grpc-dev.sh
+    ports:
+      - 55555:50051
+    environment:
+      - DEVELOP
+      - AUTORELOAD
 
   worker:
     <<: *base
