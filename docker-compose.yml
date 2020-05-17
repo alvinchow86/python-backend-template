@@ -19,7 +19,7 @@ services:
   web:
     <<: *base
     ports:
-      - 8888:80
+      - 8000:80
     container_name: alvinchow_service_web
     command: /home/app/entrypoint/run-web-dev.sh
     environment:
