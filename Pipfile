@@ -32,6 +32,13 @@ sqlalchemy-postgres-bigid = "==0.1.0"
 flask = "==1.1.2"
 # Queueing
 celery = {extras = ["redis"],version = "==4.4.2"}
+# gRPC
+Cython = "==0.29.15"
+grpcio = "==1.29.0"
+grpcio-status = "==1.29.0"
+protobuf = "==3.11.3"
+alvin-grpc-lib = "==0.0.1"
+protobuf_serialization = "==0.1.1"
 
 # Monitoring
 sentry-sdk= "==0.14.4"

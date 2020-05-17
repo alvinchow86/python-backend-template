@@ -12,3 +12,10 @@ push:
 	docker push $(DOCKER_REMOTE)
 
 buildpush: build push
+
+buildproto:
+		alvinchow_service/api/grpc/makeprotobufs
+
+proto: buildproto
+	mkdir -p dist && \
+	cp -r alvinchow_service/api/grpc/dist/*.tar.gz dist

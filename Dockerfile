@@ -14,6 +14,7 @@ RUN \
   && apk add --no-cache libstdc++ \
   && pip install pipenv uwsgi \
   && pip install git+https://github.com/Supervisor/supervisor \
+  && pip install Cython==0.29.15 grpcio==1.29.0 \
   && apk del native-deps
 
 # Optimization trick to cache pip libraries if not changed
