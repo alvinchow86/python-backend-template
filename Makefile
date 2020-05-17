@@ -14,7 +14,7 @@ push:
 buildpush: build push
 
 buildproto:
-		alvinchow_service/api/grpc/makeprotobufs
+	alvinchow_service/api/grpc/makeprotobufs
 
 proto: buildproto
 	mkdir -p dist && \
