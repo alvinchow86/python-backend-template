@@ -2,11 +2,12 @@ from flask import Flask, jsonify, request
 from scout_apm.flask import ScoutApm
 import sentry_sdk
 
-from alvinchow_service.api import api
+from alvinchow_service.api.rest import api
 from alvinchow_service.app import config
 from alvinchow_service.app import initialize
-from alvinchow_service.web import web
-from alvinchow_service.api import exceptions
+from alvinchow_service.app.flask.csrf import set_csrf_cookie_on_response, csrf_protect_request
+# from alvinchow_service.web import web
+from alvinchow_service.api.rest import exceptions
 from alvinchow_service.lib import get_logger
 
 logger = get_logger(__name__)
@@ -52,6 +53,10 @@ def create_app():
         session = get_session()
         session.remove()
         return response
+
+    # CSRF (remove if not using csrf/app is not serving web clients)
+    app.before_request(csrf_protect_request)
+    app.after_request(set_csrf_cookie_on_response)
 
     if config.SCOUT_KEY:
         app.config['SCOUT_MONITOR'] = True

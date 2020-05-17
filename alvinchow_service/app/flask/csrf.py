@@ -3,8 +3,8 @@ import secrets
 from flask import g, request
 
 from alvinchow_service.app import config
-from alvinchow_service.auth.exceptions import CSRFValidationError
-from alvinchow_service.api import exceptions as api_exceptions
+from alvinchow_service.app.flask.exceptions import CSRFValidationError
+from alvinchow_service.api.rest import exceptions as api_exceptions
 from alvinchow_service.lib import get_logger
 
 logger = get_logger(__name__)
