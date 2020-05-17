@@ -73,6 +73,12 @@ def session(db):
 
 
 @pytest.fixture(name='config')
-def config_override(config_override_factory):
+def config_override():
     """ Write to app.config in tests safely """
-    yield from config_override_factory(app.config)
+    orig_values = config._values
+
+    yield config
+
+    for k, v in orig_values.items():
+        setattr(config, k, v)
+    config._values = orig_values
