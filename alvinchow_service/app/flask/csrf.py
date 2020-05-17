@@ -20,14 +20,12 @@ CSRF_HEADER_NAMES = ('CSRF-Token', 'X-CSRF-Token')   # TODO multiple headers
 def csrf_protect_request():
     """
     @app.before_request handler
-
-    TODO maybe move function to API layer..
     """
-    # Either get the csrf_token from cEookie, or make a new one
+    # Either get the csrf_token from cookie, or make a new one
     csrf_token = _get_csrf_token_from_cookie()
     csrf_token = csrf_token or generate_csrf_token()
 
-    # pass this to set_csrf_cookie_on_response handler, so it'll know to set the response cookie
+    # Pass this to set_csrf_cookie_on_response handler, so it'll know to set the response cookie
     # we set it here so we have the ability to unset/reset the token if we need to
     g.csrf_token = csrf_token
 
