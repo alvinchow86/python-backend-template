@@ -15,11 +15,12 @@ def set_session(session):
 
 
 @contextmanager
-def session_commit(exception=MutationError):
+def session_commit(exception=MutationError, commit=True):
     session = get_session()
     try:
         yield session
-        session.commit()
+        if commit:
+            session.commit()
     except Exception as e:
         session.rollback()
         if exception:
