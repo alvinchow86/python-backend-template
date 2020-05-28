@@ -7,7 +7,7 @@ x-base: &base
       - FURY_AUTH
   env_file: .dockerenv
   volumes:
-    - $PWD:/home/app:delegated
+    - $PWD:/home/app:cached
   depends_on:
     - postgres
     - redis
