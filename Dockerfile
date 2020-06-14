@@ -8,7 +8,7 @@ RUN mkdir -p /home/app
 
 # Install expensive things
 RUN \
-  BUILD_DEPS='python3-dev g++ git' \
+  BUILD_DEPS='build-essential python3-dev git' \
   && apt-get update \
   && apt-get install -y postgresql-client nginx \
   && apt-get install -y --no-install-recommends $BUILD_DEPS \
@@ -24,7 +24,7 @@ RUN \
 COPY Pipfile Pipfile.lock ./
 
 RUN \
-  BUILD_DEPS='python3-dev g++ libffi-dev libpq-dev' \
+  BUILD_DEPS='build-essential python3-dev libffi-dev libpq-dev' \
   && apt-get update \
   && apt-get install -y --no-install-recommends $BUILD_DEPS \
   && pipenv install --system --dev \
@@ -44,5 +44,4 @@ RUN mkdir /etc/supervisor.d && ln -s /home/app/infra/supervisord.conf /etc/ && \
 
 RUN pip install -e .
 
-# CMD "/home/app/entrypoint/run-web.sh"
-CMD "/home/app/entrypoint/run-admin.sh"
+CMD "/home/app/entrypoint/run-web.sh"
