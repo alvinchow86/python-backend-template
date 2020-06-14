@@ -9,19 +9,23 @@ from alvinchow_service.app.flask.server import app as flask_app
 @click.option('-p', '--port', default=8000)
 @click.option('--debug/--no-debug', default=True, envvar='FLASK_DEBUG')
 @click.option('--debugger', 'use_debugger', is_flag=True, envvar='FLASK_DEBUGGER')
-@click.option('--autoreload/--no-autoreload', default=True, envvar='FLASK_AUTORELOAD')
-def run_server(host, port, debug, use_debugger, autoreload):
+@click.option('--autoreload/--no-autoreload', default=False, envvar='FLASK_AUTORELOAD')
+@click.option('--ssl', is_flag=True, envvar='FLASK_SSL')
+def run_server(host, port, debug, use_debugger, autoreload, ssl):
     print(
-        'Running Flask development server on port {} (debug={}, debugger={}, autoreload={})'.format(
-            port, debug, use_debugger, autoreload
+        'Running Flask development server on port {} (debug={}, debugger={}, autoreload={}, ssl={})'.format(
+            port, debug, use_debugger, autoreload, ssl
         )
     )
+    ssl_context = 'adhoc' if ssl else None
+
     flask_app.run(
         host=host,
         port=port,
         debug=True,
         use_debugger=use_debugger,
-        use_reloader=autoreload
+        use_reloader=autoreload,
+        ssl_context=ssl_context,
     )
 
 
