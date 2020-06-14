@@ -1,4 +1,4 @@
-FROM python:3.8.3-alpine3.11
+FROM python:3.8.3-slim-buster
 
 ARG FURY_AUTH
 
@@ -8,23 +8,30 @@ RUN mkdir -p /home/app
 
 # Install expensive things
 RUN \
-  apk add --no-cache bash postgresql-client nginx \
-  && apk add --no-cache --virtual native-deps python3-dev g++ linux-headers git \
-  && pip install pip==20.1 \
-  && apk add --no-cache libstdc++ \
+  BUILD_DEPS='python3-dev g++ git' \
+  && apt-get update \
+  && apt-get install -y postgresql-client nginx \
+  && apt-get install -y --no-install-recommends $BUILD_DEPS \
   && pip install pipenv uwsgi \
   && pip install git+https://github.com/Supervisor/supervisor \
   && pip install Cython==0.29.15 grpcio==1.29.0 \
-  && apk del native-deps
+  && apt-get purge -y $BUILD_DEPS \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Optimization trick to cache pip libraries if not changed
 COPY Pipfile Pipfile.lock ./
 
 RUN \
-  apk add --no-cache --virtual build-deps libffi-dev g++ \
-    postgresql-dev python3-dev \
+  BUILD_DEPS='python3-dev g++ libffi-dev libpq-dev' \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends $BUILD_DEPS \
   && pipenv install --system --dev \
-  && apk del build-deps
+  && apt-get purge -y $BUILD_DEPS \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Copy rest of files
 COPY . /home/app
@@ -33,8 +40,9 @@ RUN mkdir /etc/supervisor.d && ln -s /home/app/infra/supervisord.conf /etc/ && \
     mkdir /var/log/supervisor && \
     rm /etc/nginx/nginx.conf && rm /etc/nginx/conf.d/default.conf && \
     ln -s /home/app/infra/nginx.conf /etc/nginx/ && \
-    addgroup -S web && adduser -S web -G web
+    groupadd web && useradd web -g web
 
 RUN pip install -e .
 
-CMD "/home/app/entrypoint/run-web.sh"
+# CMD "/home/app/entrypoint/run-web.sh"
+CMD "/home/app/entrypoint/run-admin.sh"
