@@ -16,39 +16,38 @@ x-base: &base
     - internal
 
 services:
-  # web:
-  #   <<: *base
-  #   ports:
-  #     - 8000:80
-  #   container_name: alvinchow_service_web
-  #   command: /home/app/entrypoint/run-web-dev.sh
-  #   environment:
-  #     - PORT=80
-  #     - DEVELOP
-  #     - AUTORELOAD
+  web:
+    <<: *base
+    ports:
+      - 8000:80
+    container_name: alvinchow_service_web
+    command: /home/app/entrypoint/run-web-dev.sh
+    environment:
+      - PORT=80
+      - DEVELOP
+      - AUTORELOAD
 
   grpc:
     <<: *base
     container_name: alvinchow_service_grpc
-    # command: /home/app/entrypoint/run-grpc-dev.sh
-    command: /home/app/entrypoint/run-admin.sh
+    command: /home/app/entrypoint/run-grpc-dev.sh
     ports:
       - 55555:50051
     environment:
       - DEVELOP
       - AUTORELOAD
 
-  # worker:
-  #   <<: *base
-  #   container_name: alvinchow_service_worker
-  #   command: /home/app/entrypoint/run-worker-dev.sh
-  #   environment:
-  #     - DEVELOP
+  worker:
+    <<: *base
+    container_name: alvinchow_service_worker
+    command: /home/app/entrypoint/run-worker-dev.sh
+    environment:
+      - DEVELOP
 
-  # scheduler:
-  #   <<: *base
-  #   container_name: alvinchow_service_scheduler
-  #   command: /home/app/entrypoint/run_scheduler.py
+  scheduler:
+    <<: *base
+    container_name: alvinchow_service_scheduler
+    command: /home/app/entrypoint/run_scheduler.py
 
   postgres:
     container_name: alvinchow_service_postgres

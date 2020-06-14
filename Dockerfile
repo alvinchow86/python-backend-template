@@ -38,7 +38,7 @@ COPY . /home/app
 
 RUN mkdir /etc/supervisor.d && ln -s /home/app/infra/supervisord.conf /etc/ && \
     mkdir /var/log/supervisor && \
-    rm /etc/nginx/nginx.conf && rm /etc/nginx/conf.d/default.conf && \
+    rm /etc/nginx/nginx.conf && \
     ln -s /home/app/infra/nginx.conf /etc/nginx/ && \
     groupadd web && useradd web -g web
 
