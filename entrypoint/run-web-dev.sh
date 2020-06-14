@@ -22,5 +22,5 @@ fi
 if [[ $DEVELOP == "1" ]]; then
   FLASK_DEBUGGER=$FLASK_DEBUGGER FLASK_AUTORELOAD=$AUTORELOAD ./manage.py runserver -p ${PORT}
 else
-  /home/app/run-web.sh
+  /home/app/entrypoint/run-web.sh
 fi

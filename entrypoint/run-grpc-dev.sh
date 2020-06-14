@@ -26,5 +26,5 @@ if [[ $DEVELOP == "1" ]]; then
     ./manage.py rungrpcserver
   fi
 else
-  /home/app/run-grpc.sh
+  /home/app/entrypoint/run-grpc.sh
 fi
