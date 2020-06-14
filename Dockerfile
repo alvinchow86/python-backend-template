@@ -8,15 +8,14 @@ RUN mkdir -p /home/app
 
 # Install expensive things
 RUN \
-  BUILD_DEPS='build-essential python3-dev git' \
+  BUILD_DEPS='g++ python3-dev git' \
   && apt-get update \
   && apt-get install -y postgresql-client nginx \
   && apt-get install -y --no-install-recommends $BUILD_DEPS \
   && pip install pipenv uwsgi \
   && pip install git+https://github.com/Supervisor/supervisor \
   && pip install Cython==0.29.15 grpcio==1.29.0 \
-  && apt-get purge -y $BUILD_DEPS \
-  && apt-get autoremove -y \
+  && apt-get purge --autoremove -y $BUILD_DEPS \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -24,12 +23,11 @@ RUN \
 COPY Pipfile Pipfile.lock ./
 
 RUN \
-  BUILD_DEPS='build-essential python3-dev libffi-dev libpq-dev' \
+  BUILD_DEPS='g++ python3-dev libffi-dev libpq-dev' \
   && apt-get update \
   && apt-get install -y --no-install-recommends $BUILD_DEPS \
   && pipenv install --system --dev \
-  && apt-get purge -y $BUILD_DEPS \
-  && apt-get autoremove -y \
+  && apt-get purge --autoremove -y $BUILD_DEPS \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
