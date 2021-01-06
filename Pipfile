@@ -38,14 +38,14 @@ graphql-server = "==3.0.0b3"
 # Queueing
 celery = {extras = ["redis"],version = "==5.0.1"}
 # Auth/security (if using user-login)
-cryptography = "==3.2.1"
+cryptography = "==3.3.1"
 passlib = "==1.7.4"
 argon2-cffi = "==20.1.0"
 # gRPC
-Cython = "==0.29.15"
-grpcio = "==1.29.0"
-grpcio-status = "==1.29.0"
-protobuf = "==3.11.3"
+Cython = "==0.29.21"
+grpcio = "==1.34.0"
+grpcio-status = "==1.34.0"
+protobuf = "==3.14.0"
 alvin-grpc-lib = "==0.0.1"
 protobuf_serialization = "==0.1.1"
 
@@ -61,4 +61,4 @@ rules = "==2.0.1"
 easydict = "==1.9"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
