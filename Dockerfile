@@ -17,7 +17,8 @@ RUN \
   && pip install git+https://github.com/Supervisor/supervisor \
   && echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-  && pip install Cython==0.29.21 grpcio==1.34.0 \
+  && apt-get update \
+  && apt-get install -y postgresql-client-12 \
   && apt-get purge --autoremove -y $BUILD_DEPS \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*

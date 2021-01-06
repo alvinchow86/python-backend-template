@@ -24,7 +24,7 @@ def upgrade():
     op.create_table('user',
     sa.Column('created_at', alvinchow_service.db.types.UTCDateTime(timezone=True), nullable=True),
     sa.Column('updated_at', alvinchow_service.db.types.UTCDateTime(timezone=True), nullable=True),
-    sa.Column('id', alvinchow_service.db.types.BigID(), nullable=False),
+    sa.Column('id', alvinchow_service.db.types.BigIntegerID(), nullable=False),
     sa.Column('username', alvinchow_service.db.types.Text(), nullable=True),
     sa.Column('email', alvinchow_service.db.types.Text(), nullable=True),
     sa.Column('password', alvinchow_service.db.types.Text(), nullable=True),

@@ -32,7 +32,7 @@ services:
     container_name: alvinchow_service_grpc
     command: /home/app/entrypoint/run-grpc-dev.sh
     ports:
-      - 55555:50051
+      - 51051:50051
     environment:
       - DEVELOP
       - AUTORELOAD
