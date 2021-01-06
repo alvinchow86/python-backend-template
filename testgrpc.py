@@ -4,7 +4,7 @@ import grpc
 from alvinchow_service_protobuf import common_pb2, alvinchow_service_pb2_grpc
 
 
-channel = grpc.insecure_channel('localhost:55555')
+channel = grpc.insecure_channel('localhost:51051')
 stub = alvinchow_service_pb2_grpc.AlvinChowServiceStub(channel)
 
 

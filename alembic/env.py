@@ -5,7 +5,7 @@ from logging.config import fileConfig
 from alvinchow_service import app
 app.initialize()
 from alvinchow_service.db.base import Base, get_engine   # noqa # must do this after initialize()
-from sqlalchemy_bigid import migration    # noqa make sure custom hooks are registered
+from sqlalchemy_bigint_id import migration    # noqa make sure custom hooks are registered
 
 
 # this is the Alembic Config object, which provides
@@ -53,7 +53,7 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    from sqlalchemy_bigid.migration import writer
+    from sqlalchemy_bigint_id.migration import writer
     engine = get_engine()
 
     with engine.connect() as connection:

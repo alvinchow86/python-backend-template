@@ -1,4 +1,4 @@
-FROM python:3.8.3-slim-buster
+FROM python:3.9.1-slim-buster
 
 ARG FURY_AUTH
 
@@ -7,14 +7,18 @@ WORKDIR /home/app
 RUN mkdir -p /home/app
 
 # Install expensive things
+# Installing postgresql-client-12 needs extra step (https://www.postgresql.org/download/linux/debian/)
 RUN \
-  BUILD_DEPS='g++ python3-dev git' \
+  BUILD_DEPS='g++ python3-dev git gnupg' \
   && apt-get update \
-  && apt-get install -y postgresql-client nginx \
+  && apt-get install -y nginx wget less git \
   && apt-get install -y --no-install-recommends $BUILD_DEPS \
   && pip install pipenv uwsgi \
   && pip install git+https://github.com/Supervisor/supervisor \
-  && pip install Cython==0.29.15 grpcio==1.29.0 \
+  && echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+  && apt-get update \
+  && apt-get install -y postgresql-client-12 \
   && apt-get purge --autoremove -y $BUILD_DEPS \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*

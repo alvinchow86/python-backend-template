@@ -2,16 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from scout_apm.sqlalchemy import instrument_sqlalchemy
-import sqlalchemy_bigid
+import sqlalchemy_bigint_id
 
 from alvinchow_service.app import config
 
 
-BIGID_EPOCH_SECONDS = 1589674264    # this is 1/1/2020, configure to whatever you like
+BIGINT_ID_EPOCH_SECONDS = 1589674264    # this is 1/1/2020, configure to whatever you like
 
 
 Base = declarative_base()     # this is used for models
-sqlalchemy_bigid.configure(epoch_seconds=BIGID_EPOCH_SECONDS)
+sqlalchemy_bigint_id.configure(epoch_seconds=BIGINT_ID_EPOCH_SECONDS)
 
 
 engine = None
@@ -39,12 +39,12 @@ def initialize_database(database_url=None):
 
     # import models to register them here
     from alvinchow_service.db import models   # noqa
-    from sqlalchemy_bigid import setup_bigid_for_all_tables
+    from sqlalchemy_bigint_id import setup_bigint_id_for_all_tables
 
     functions.register_postgres_functions(metadata=Base.metadata)
 
     # Register bigid for all tables that have it
-    setup_bigid_for_all_tables(metadata=Base.metadata)
+    setup_bigint_id_for_all_tables(metadata=Base.metadata)
 
     instrument_sqlalchemy(engine)
 

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Boolean
 
 from alvinchow_service.db.base import Base
 from alvinchow_service.db.models.base import BaseModelMixin
-from alvinchow_service.db.types import BigID, Text
+from alvinchow_service.db.types import BigIntegerID, Text
 
 
 """
@@ -11,7 +11,7 @@ This is just a sample table, remove this (and alembic migration) in your real ap
 class User(BaseModelMixin, Base):
     __tablename__ = 'user'
 
-    id = Column(BigID, primary_key=True)
+    id = Column(BigIntegerID, primary_key=True)
     username = Column(Text)
     email = Column(Text)
     password = Column(Text)

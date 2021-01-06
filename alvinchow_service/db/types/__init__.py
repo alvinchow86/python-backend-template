@@ -4,7 +4,7 @@
 from alvinchow.sqlalchemy.types import (
     UTCDateTime, Text, JSONB
 )
-from sqlalchemy_bigid.types import BigID
+from sqlalchemy_bigint_id.types import BigIntegerID
 
 # Imoprt other stuff
 #from .foo import Foo
