@@ -31,4 +31,3 @@ Note that this depends on a few other libraries. The idea is to manage some comm
 - https://github.com/alvinchow86/alvin-python-lib
 - https://github.com/alvinchow86/alvin-grpc-py
 
-## Background
