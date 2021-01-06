@@ -26,5 +26,8 @@ Note that this can be used for either a monolithic application, a microservice, 
 - Docker
 - pytest
 
+Note that this depends on a few other libraries. The idea is to manage some common Python code in your own libraries, so that they can be shared among multiple Python backend services.
+- https://github.com/alvinchow86/alvin-python-lib
+- https://github.com/alvinchow86/alvin-grpc-py
 
 ## Background
