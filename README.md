@@ -28,6 +28,7 @@ Here are some possible use cases for this template:
 - SQLAlchemy ORM
 - PostgreSQL database
 - Redis for Celery queue
+- Supervisor for process management
 - Docker
 - pytest
 
@@ -55,7 +56,7 @@ Database models and helpers should be in `db`. Business logic is recommended to 
 ### 64-bit IDs
 This template uses Postgres and SQLAlchemy, with 64-bit generated Snowflake/Instagram-style primary keys (courtesy of this library https://github.com/alvinchow86/sqlalchemy-postgres-bigint-id). These are much more futureproof than auto-incrementing 32-bit IDs, but have less overhead than 128-bit UUIDs.
 
-### DB repository
+### Database Repository
 I'm using a "repository" pattern to provide a light-weight access layer on top of SQLAlchemy. It's sort of related to the repository pattern that's out there, but simplified with plain Python functions grouped in modules. The idea is to wrap most access to the database (queries, creation, deletion) in standalone functions. This ensures that that code is easily testable, and abstracts away ORM-specific details.
 
 There is a folder called `db/repository` where these can live. I usually will create a simple Python module to wrap a model, (e.g. `db/repository/user.py`). You can add convenience imports in `db/repository/__init__.py` such as `from . import user as user_repo`. Then in application code do
@@ -67,12 +68,12 @@ user = user_repo.get_user(123)
 
 It can become cumbersome to make a separate "repo" for every model, I will usually group together related models into a larger "repo" package to simplify things.
 
-### Common code
+### Common Code
 Common utilities and helpers that may be useful for different services are put in a shared library (see below).
 
 ## How to Use
 
-### Rename
+### Rename Folders and Paths
 This is not a framework but a template. You will want to rename a bunch of folders and names, but I have made htis easy but calling them something unique like "alvinchow".
 
 Decide on a top-level package name. It might be something like `<ORG_NAME>_backend` or `<ORG_NAME>_<user>` (if you were building a "user" microservice).
@@ -84,7 +85,7 @@ Decide on a top-level package name. It might be something like `<ORG_NAME>_backe
 4. Global text-replace `alvinchow-service` with something else (e.g. `user-service`)
 5. In `docker-compose.yml`, replace the text `alvinchow`
 
-### Companion libraries
+### Companion Libraries
 By default, this template requires close integration with companion libraries:
 
 **alvin-python-lib** (https://github.com/alvinchow86/alvin-python-lib):
@@ -98,6 +99,62 @@ By default, this template requires close integration with companion libraries:
 Copy these libraries and rename as appropriate (grep for the words `alvin` and `alvinchow` and replace with your org name or something). You can then either build and distribute these on a private PyPi server, or just link these libraries as top-level Git submodules in this project.
 
 This pattern is mostly useful if you plan to have multiple backend apps (microservices) - if you only have one, monolithic app, it might be less useful. In that case just fold the library modules into this codebase.
+
+### Delete Unused Stuff
+As mentioned earlier, this template is a kitchen sink of features but most likely you won't need everything. You should delete the code and dependencies you don't need. Take a look at the code, Pipfile and Dockerfile.
+
+Here are some feature categories and things you might want to remove if not being used.
+
+#### Web
+- Pipfile: flask, graphene, graphql-server
+- Dockerfile uwsgi, nginx
+- api/flask
+- app/flask
+
+#### Auth
+- Pipfile: `passlib`, `argon2`
+
+#### gRPC
+- Pipfile: Cython, grpcio*, protobuf, alvin-grpc-lib
+- protobuf folder
+- api/grpc
+
+
+
+## Folder Structure
+
+### `api/`
+- API code (REST, GraphQL, gRPC)
+
+### `app/`
+- Global application configuration, initialization.
+- Stores app instances for Flask, Celery, etc
+
+### `commands/`
+- Custom CLI commands
+
+### `db/`
+- Database models, helpers and setup
+- Repository functions can go here
+
+### `lib/`
+- Helper code that is specific to this application
+
+### `lib/`
+- Helper code that is specific to this application
+
+### `remote/`
+- Put code related to accessing other microservices (e.g. abstraction clients) or vendor APIs
+
+### `service/`
+- Business logic (application logic) should go here
+- Organize into separate modules/packages as you see fit
+
+### `test/`
+- Test factory functions and other helpers
+
+### `utils/`
+- Other helper code, that isn't specific to this application. The difference with `lib` is code here could theoretically be extracted into a separate Python library
 
 ## Local Development
 Local development is based on Docker and docker-compose.
@@ -130,6 +187,7 @@ Management cli commands
 ```
 manage <command>
 ```
+
 
 ## Testing
 pytest is uses for tests. Follow standard pytest conventions to make test files (make a `test_**.py` file, with functions starting with `test_`, etc).
