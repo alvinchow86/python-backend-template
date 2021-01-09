@@ -106,8 +106,8 @@ As mentioned earlier, this template is a kitchen sink of features but most likel
 Here are some feature categories and things you might want to remove if not being used.
 
 #### Web
-- Pipfile: flask, graphene, graphql-server
-- Dockerfile uwsgi, nginx
+- Pipfile: `flask`, `graphene`, `graphql-server`
+- Dockerfile: uwsgi, nginx
 - api/flask
 - app/flask
 
@@ -115,10 +115,9 @@ Here are some feature categories and things you might want to remove if not bein
 - Pipfile: `passlib`, `argon2`
 
 #### gRPC
-- Pipfile: Cython, grpcio*, protobuf, alvin-grpc-lib
+- Pipfile: `Cython`, `grpcio*`, `protobuf`, `alvin-grpc-lib`
 - protobuf folder
 - api/grpc
-
 
 
 ## Folder Structure
