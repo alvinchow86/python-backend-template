@@ -22,6 +22,9 @@ dist
 .venv
 venv
 
+# Editors
+.vscode
+
 # mkdocs documentation
 /site
 

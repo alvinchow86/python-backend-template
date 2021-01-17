@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Index, Boolean, and_
+from sqlalchemy import Column, Index, Boolean
 
 from alvinchow_backend.db.base import Base
 from alvinchow_backend.db.models.base import BaseModelMixin
@@ -8,6 +8,8 @@ from alvinchow_backend.db.types import BigIntegerID, Text, UTCDateTime
 """
 This is just a sample table, remove this (and alembic migration) in your real app!
 """
+
+
 class User(BaseModelMixin, Base):
     __tablename__ = 'user'
 
@@ -23,7 +25,7 @@ class User(BaseModelMixin, Base):
 
     __table_args__ = (
         Index('ix_user_email_unique', email, unique=True, postgresql_where=(
-            email_verified_at.isnot(None),
+            email_verified_at.isnot(None)
         )),
     )
 
