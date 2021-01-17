@@ -24,6 +24,11 @@ def create_app():
             dsn=config.SENTRY_DSN,
         )
 
+    # app.session_interface = RedisSessionInterface(
+    #     session_cookie_domain=session_cookie_domain,
+    #     session_expiration_seconds=session_expiration_seconds,
+    # )
+
     app.register_blueprint(api, url_prefix='/api')
     # app.register_blueprint(web)
 
