@@ -1,7 +1,7 @@
 from alvinchow.lib.exceptions import BaseException
 
 
-class APIException(BaseException):
+class ApiException(BaseException):
     status_code = 400
 
     def __init__(self, *args, status_code=None, error_code=None, **kwargs):
@@ -17,21 +17,21 @@ class APIException(BaseException):
         return obj
 
 
-class BadRequestError(APIException):
+class BadRequestError(ApiException):
     status_code = 400
 
 
-class ResourceNotFound(APIException):
+class ResourceNotFound(ApiException):
     status_code = 404
 
 
-class UnauthorizedError(APIException):
+class UnauthorizedError(ApiException):
     status_code = 401
 
 
-class ServerError(APIException):
+class ServerError(ApiException):
     status_code = 500
 
 
-class CSRFValidationError(APIException):
+class CSRFValidationError(ApiException):
     status_code = 403
