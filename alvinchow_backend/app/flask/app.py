@@ -1,11 +1,10 @@
 from flask import Flask, jsonify, request
 from scout_apm.flask import ScoutApm
-import sentry_sdk
 
 from alvinchow_backend.api.rest import api
 from alvinchow_backend.app import config
 from alvinchow_backend.app import initialize
-from alvinchow_backend.app.flask.csrf import set_csrf_cookie_on_response, csrf_protect_request
+from alvinchow_backend.app.flask.csrf import register_csrf
 from alvinchow_backend.app.flask.session import RedisSessionInterface
 from alvinchow_backend.app.monitoring import initialize_sentry
 
@@ -15,6 +14,11 @@ from alvinchow_backend.api.rest import exceptions
 from alvinchow_backend.lib import get_logger
 
 logger = get_logger(__name__)
+
+
+CSRF_EXCLUDE_PATTERN = None
+if not config.PRODUCTION:
+    CSRF_EXCLUDE_PATTERN = '/dev'
 
 
 def create_app():
@@ -57,9 +61,8 @@ def create_app():
         session.remove()
         return response
 
-    # CSRF (remove if not using csrf/app is not serving web clients)
-    app.before_request(csrf_protect_request)
-    app.after_request(set_csrf_cookie_on_response)
+    # Register csrf everywhere
+    register_csrf(app, exclude_url_pattern=CSRF_EXCLUDE_PATTERN)
 
     initialize_sentry(flask=True)
 
