@@ -6,6 +6,8 @@ from alvinchow_backend.api.rest import api
 from alvinchow_backend.app import config
 from alvinchow_backend.app import initialize
 from alvinchow_backend.app.flask.csrf import set_csrf_cookie_on_response, csrf_protect_request
+from alvinchow_backend.app.flask.session import RedisSessionInterface
+
 from alvinchow_backend.db import get_session
 # from alvinchow_backend.web import web
 from alvinchow_backend.api.rest import exceptions
@@ -24,10 +26,7 @@ def create_app():
             dsn=config.SENTRY_DSN,
         )
 
-    # app.session_interface = RedisSessionInterface(
-    #     session_cookie_domain=session_cookie_domain,
-    #     session_expiration_seconds=session_expiration_seconds,
-    # )
+    app.session_interface = RedisSessionInterface()
 
     app.register_blueprint(api, url_prefix='/api')
     # app.register_blueprint(web)
