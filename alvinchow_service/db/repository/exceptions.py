@@ -1,3 +1,3 @@
-# from alvinchow_service.db.exceptions import (
-#     DatabaseError, NotFoundError, MutationError, CreateError, UpdateError
-# )
+from alvinchow_service.db.exceptions import (   # noqa
+    DatabaseError, NotFoundError, MutationError, CreateError, UpdateError
+)
