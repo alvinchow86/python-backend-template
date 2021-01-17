@@ -1,17 +1,23 @@
 from flask import Flask, jsonify, request
 from scout_apm.flask import ScoutApm
-import sentry_sdk
 
 from alvinchow_backend.api.rest import api
 from alvinchow_backend.app import config
 from alvinchow_backend.app import initialize
-from alvinchow_backend.app.flask.csrf import set_csrf_cookie_on_response, csrf_protect_request
+from alvinchow_backend.app.flask.csrf import register_csrf
+from alvinchow_backend.app.flask.session import RedisSessionInterface
+from alvinchow_backend.app.monitoring import initialize_sentry
+
 from alvinchow_backend.db import get_session
-# from alvinchow_backend.web import web
-from alvinchow_backend.api.rest import exceptions
+from alvinchow_backend.lib.web import exceptions
 from alvinchow_backend.lib import get_logger
 
 logger = get_logger(__name__)
+
+
+CSRF_EXCLUDE_PATTERN = None
+if not config.PRODUCTION:
+    CSRF_EXCLUDE_PATTERN = '/dev'
 
 
 def create_app():
@@ -19,15 +25,14 @@ def create_app():
     # App initialization code goes here
     app = Flask(__name__)
 
-    if config.SENTRY_DSN:
-        sentry_sdk.init(
-            dsn=config.SENTRY_DSN,
-        )
+    app.session_interface = RedisSessionInterface()
 
     app.register_blueprint(api, url_prefix='/api')
     # app.register_blueprint(web)
 
-    @app.errorhandler(exceptions.APIException)
+    app.config['SESSION_COOKIE_NAME'] = 'session_id'
+
+    @app.errorhandler(exceptions.ApiException)
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
@@ -55,9 +60,10 @@ def create_app():
         session.remove()
         return response
 
-    # CSRF (remove if not using csrf/app is not serving web clients)
-    app.before_request(csrf_protect_request)
-    app.after_request(set_csrf_cookie_on_response)
+    # Register csrf everywhere
+    register_csrf(app, exclude_url_pattern=CSRF_EXCLUDE_PATTERN)
+
+    initialize_sentry(flask=True)
 
     if config.SCOUT_KEY:
         app.config['SCOUT_MONITOR'] = True

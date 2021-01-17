@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "71664d132998f094747d74bf8089b3df29604291bf8bb65fdf3646dcb83330e1"
+            "sha256": "fe2c0b9aacafad76b16c21a4154b1249fabb01b200ed911adf8e81daa3b92310"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -38,10 +38,10 @@
         },
         "alvin-python-lib": {
             "hashes": [
-                "sha256:642bcf5537e7016a583b93c9eb189005c0c5221cdf33e068db98074e998ce690"
+                "sha256:c3236e150e064364161d6833a22273c6426f7def3d65d6cc7d79ff2c4cac856a"
             ],
             "index": "pypi",
-            "version": "==0.0.4"
+            "version": "==0.0.5"
         },
         "amqp": {
             "hashes": [

@@ -52,6 +52,8 @@ services:
   postgres:
     container_name: alvinchow_backend_postgres
     image: postgres:12-alpine
+    ports:
+      - 6432:5432
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=password
@@ -62,7 +64,7 @@ services:
 
   redis:
     container_name: alvinchow_backend_redis
-    image: redis:5-alpine
+    image: redis:6.0.4-alpine
     networks:
       - internal
 
