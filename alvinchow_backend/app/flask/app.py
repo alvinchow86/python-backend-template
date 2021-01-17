@@ -7,6 +7,7 @@ from alvinchow_backend.app import config
 from alvinchow_backend.app import initialize
 from alvinchow_backend.app.flask.csrf import set_csrf_cookie_on_response, csrf_protect_request
 from alvinchow_backend.app.flask.session import RedisSessionInterface
+from alvinchow_backend.app.monitoring import initialize_sentry
 
 from alvinchow_backend.db import get_session
 # from alvinchow_backend.web import web
@@ -21,15 +22,12 @@ def create_app():
     # App initialization code goes here
     app = Flask(__name__)
 
-    if config.SENTRY_DSN:
-        sentry_sdk.init(
-            dsn=config.SENTRY_DSN,
-        )
-
     app.session_interface = RedisSessionInterface()
 
     app.register_blueprint(api, url_prefix='/api')
     # app.register_blueprint(web)
+
+    app.config['SESSION_COOKIE_NAME'] = 'session_id'
 
     @app.errorhandler(exceptions.APIException)
     def handle_invalid_usage(error):
@@ -62,6 +60,8 @@ def create_app():
     # CSRF (remove if not using csrf/app is not serving web clients)
     app.before_request(csrf_protect_request)
     app.after_request(set_csrf_cookie_on_response)
+
+    initialize_sentry(flask=True)
 
     if config.SCOUT_KEY:
         app.config['SCOUT_MONITOR'] = True
