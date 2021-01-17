@@ -1,0 +1,6 @@
+[submodule "alvin-grpc-py"]
+	path = alvin-grpc-py
+	url = https://github.com/alvinchow86/alvin-grpc-py.git
+[submodule "alvin-python-lib"]
+	path = alvin-python-lib
+	url = https://github.com/alvinchow86/alvin-python-lib.git

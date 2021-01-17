@@ -44,6 +44,6 @@ RUN mkdir /etc/supervisor.d && ln -s /home/app/infra/supervisord.conf /etc/ && \
     ln -s /home/app/infra/nginx.conf /etc/nginx/ && \
     groupadd web && useradd web -g web
 
-RUN pip install -e .
+RUN pip install -e alvin-python-lib -e alvin-grpc-py -e .
 
 CMD "/home/app/entrypoint/run-web.sh"
