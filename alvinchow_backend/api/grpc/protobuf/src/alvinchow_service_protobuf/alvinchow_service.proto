@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+import "alvinchow_backend_protobuf/common.proto";
+import "alvinchow_backend_protobuf/foo.proto";
+
+package alvinchow_backend;
+
+service AlvinChowService {
+  rpc Ping(google.protobuf.Empty) returns (SimpleResponse);
+  rpc GetFoo(IdRequest) returns (Foo);
+}

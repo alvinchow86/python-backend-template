@@ -7,8 +7,8 @@ Create Date: ${create_date}
 """
 from alembic import op
 import sqlalchemy as sa
-import alvinchow_service.db.types
-from alvinchow_service.db.types import Text   # this is just for custom JSONB Alembic bug, remove if not needed
+import alvinchow_backend.db.types
+from alvinchow_backend.db.types import Text   # this is just for custom JSONB Alembic bug, remove if not needed
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.

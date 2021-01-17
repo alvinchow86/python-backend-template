@@ -1,0 +1,17 @@
+#!/bin/bash
+cd $(dirname $0)
+
+DISTRIBUTE_FOLDER="alvinchow_backend_protobuf_async"
+PACKAGE_NAME=alvinchow_backend_protobuf
+PYTHON_PATH="$DISTRIBUTE_FOLDER/$PACKAGE_NAME"
+
+rm -rf $DISTRIBUTE_FOLDER
+mkdir -p $PYTHON_PATH
+
+python -m grpc_tools.protoc -I protobuf/src --python_out=$DISTRIBUTE_FOLDER --python_grpc_out=$DISTRIBUTE_FOLDER protobuf/src/$PACKAGE_NAME/*.proto
+
+# Generate package
+cp version.py $PYTHON_PATH
+cp setup_async.py $DISTRIBUTE_FOLDER/setup.py
+cd $DISTRIBUTE_FOLDER
+python setup.py sdist

@@ -12,7 +12,7 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        manage=alvinchow_service.commands:cli
+        manage=alvinchow_backend.commands:cli
         runtests=runtests:main
     ''',
 )

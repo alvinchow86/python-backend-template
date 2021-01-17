@@ -1,10 +1,10 @@
 import pytest
 
-from alvinchow_service import app
-from alvinchow_service.db import base
-from alvinchow_service.db.session import get_session
-from alvinchow_service.app import config
-from alvinchow_service.lib.redis import get_redis_connection
+from alvinchow_backend import app
+from alvinchow_backend.db import base
+from alvinchow_backend.db.session import get_session
+from alvinchow_backend.app import config
+from alvinchow_backend.lib.redis import get_redis_connection
 
 
 app.initialize()
