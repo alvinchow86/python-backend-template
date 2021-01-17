@@ -24,7 +24,6 @@ pre-commit = "==2.6.0"
 apscheduler = "==3.6.3"
 pytz = "==2020.1"
 python-dateutil = "==2.8.1"
-alvin-python-lib = "==0.0.5"
 # Database, Caching
 alembic = "==1.4.3"
 psycopg2-binary = "==2.8.3"
@@ -46,7 +45,6 @@ Cython = "==0.29.21"
 grpcio = "==1.34.0"
 grpcio-status = "==1.34.0"
 protobuf = "==3.14.0"
-alvin-grpc-lib = "==0.0.1"
 protobuf_serialization = "==0.1.1"
 
 # Monitoring

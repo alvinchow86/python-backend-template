@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fe2c0b9aacafad76b16c21a4154b1249fabb01b200ed911adf8e81daa3b92310"
+            "sha256": "a8960f3e7b39ebb5ca86c0c72265b8d45ef361dea514e3be1f245c3041e59949"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -28,20 +28,6 @@
             ],
             "index": "pypi",
             "version": "==1.4.3"
-        },
-        "alvin-grpc-lib": {
-            "hashes": [
-                "sha256:e47f9f2c5cb5b6e970fd07c589a0b4eba8bfc2980d67638ccf67fae02812a5df"
-            ],
-            "index": "pypi",
-            "version": "==0.0.1"
-        },
-        "alvin-python-lib": {
-            "hashes": [
-                "sha256:c3236e150e064364161d6833a22273c6426f7def3d65d6cc7d79ff2c4cac856a"
-            ],
-            "index": "pypi",
-            "version": "==0.0.5"
         },
         "amqp": {
             "hashes": [
