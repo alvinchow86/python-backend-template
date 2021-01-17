@@ -3,7 +3,7 @@ exclude =
   venv
   .venv
   alembic
-  alvinchow_service_protobuf
-  alvinchow_service/api/grpc/alvinchow_service_protobuf_async
+  alvinchow_backend_protobuf
+  alvinchow_backend/api/grpc/alvinchow_backend_protobuf_async
 
 max-line-length = 120

@@ -62,7 +62,7 @@ I'm using a "repository" pattern to provide a light-weight access layer on top o
 There is a folder called `db/repository` where these can live. I usually will create a simple Python module to wrap a model, (e.g. `db/repository/user.py`). You can add convenience imports in `db/repository/__init__.py` such as `from . import user as user_repo`. Then in application code do
 
 ```python
-from alvinchow_service.db.repository import user_repo
+from alvinchow_backend.db.repository import user_repo
 user = user_repo.get_user(123)
 ```
 
@@ -79,10 +79,10 @@ This is not a framework but a template. You will want to rename a bunch of folde
 Decide on a top-level package name. It might be something like `<ORG_NAME>_backend` or `<ORG_NAME>_<user>` (if you were building a "user" microservice).
 
 1. Copy this project to a new folder
-2. Global text-replace `alvinchow_service` to `<PACKAGE_NAME>`
-3. Rename `alvinchow_service` folder to `<PACKAGE_NAME`
-4. (if using gRPC) Rename protobuf folders `alvinchow_service_protobuf` and `api/grpc/protobuf/src/alvinchow_service_protobuf` to something else.
-4. Global text-replace `alvinchow-service` with something else (e.g. `user-service`)
+2. Global text-replace `alvinchow_backend` to `<PACKAGE_NAME>`
+3. Rename `alvinchow_backend` folder to `<PACKAGE_NAME`
+4. (if using gRPC) Rename protobuf folders `alvinchow_backend_protobuf` and `api/grpc/protobuf/src/alvinchow_backend_protobuf` to something else.
+4. Global text-replace `alvinchow-backend` with something else (e.g. `user-service`)
 5. In `docker-compose.yml`, replace the text `alvinchow`
 
 ### Companion Libraries

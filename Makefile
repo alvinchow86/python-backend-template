@@ -1,6 +1,6 @@
 TAG = latest
-DOCKER_LOCAL = alvinchow-service:$(TAG)
-DOCKER_REPO = something.dkr.ecr.us-west-2.amazonaws.com/alvinchow-service
+DOCKER_LOCAL = alvinchow-backend:$(TAG)
+DOCKER_REPO = something.dkr.ecr.us-west-2.amazonaws.com/alvinchow-backend
 DOCKER_REMOTE = $(DOCKER_REPO):$(TAG)
 
 .PHONY: build
@@ -14,8 +14,8 @@ push:
 buildpush: build push
 
 buildproto:
-	alvinchow_service/api/grpc/makeprotobufs
+	alvinchow_backend/api/grpc/makeprotobufs
 
 proto: buildproto
 	mkdir -p dist && \
-	cp -r alvinchow_service/api/grpc/dist/*.tar.gz dist
+	cp -r alvinchow_backend/api/grpc/dist/*.tar.gz dist

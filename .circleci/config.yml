@@ -7,13 +7,13 @@ executors:
       - image: circleci/python:3.8.1
         environment:
          PIPENV_VENV_IN_PROJECT: true
-         DATABASE_URL: postgres://root:@localhost/alvinchow_service_test
+         DATABASE_URL: postgres://root:@localhost/alvinchow_backend_test
          REDIS_URL: redis://localhost:6379
 
       - image: circleci/postgres:11-alpine-ram
         environment:
           POSTGRES_USER: root
-          POSTGRES_DB: alvinchow_service_test
+          POSTGRES_DB: alvinchow_backend_test
       - image: circleci/redis:5.0.3
 
 

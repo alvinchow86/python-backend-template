@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from alvinchow_service.commands import cli
+from alvinchow_backend.commands import cli
 
 
 if __name__ == '__main__':

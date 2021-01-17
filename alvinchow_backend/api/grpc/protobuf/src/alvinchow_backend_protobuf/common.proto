@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package alvinchow_backend;
+
+
+message IdRequest {
+  uint64 id = 1;
+}
+
+message SimpleResponse {
+  bool success = 1;
+}

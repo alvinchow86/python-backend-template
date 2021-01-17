@@ -1,5 +1,5 @@
 # default values
-DATABASE_URL=postgres://root:password@postgres/alvinchow_service
+DATABASE_URL=postgres://root:password@postgres/alvinchow_backend
 REDIS_URL=redis://redis:6379
 CELERY_BROKER_URL=redis://redis:6379/0
 PGHOST=postgres

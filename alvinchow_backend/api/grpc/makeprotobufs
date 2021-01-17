@@ -1,0 +1,14 @@
+#!/bin/bash
+cd $(dirname $0)
+ROOT_DIR=../../..
+PACKAGE_NAME=alvinchow_backend_protobuf
+
+python -m grpc_tools.protoc -I protobuf/src --python_out=$ROOT_DIR --grpc_python_out=$ROOT_DIR protobuf/src/$PACKAGE_NAME/*.proto
+cp version.py $ROOT_DIR/$PACKAGE_NAME
+
+# Create Python distribution
+# make symlink so we can access it here
+ln -sf $ROOT_DIR/$PACKAGE_NAME .
+rm -rf dist
+mkdir -p dist
+python setup.py sdist

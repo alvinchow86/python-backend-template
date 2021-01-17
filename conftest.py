@@ -1,10 +1,10 @@
 import pytest
 
-from alvinchow_service import app
-from alvinchow_service.db import base
-from alvinchow_service.db.session import get_session
-from alvinchow_service.app import config
-from alvinchow_service.lib.redis import get_redis_connection
+from alvinchow_backend import app
+from alvinchow_backend.db import base
+from alvinchow_backend.db.session import get_session
+from alvinchow_backend.app import config
+from alvinchow_backend.lib.redis import get_redis_connection
 
 
 app.initialize()
@@ -13,6 +13,9 @@ app.initialize()
 def pytest_addoption(parser):
     parser.addoption(
         '--integration', action="store_true", default=False, help="Also run the integration tests"
+    )
+    parser.addoption(
+        '--integration-only', action="store_true", default=False, help="Only run the integration tests"
     )
 
 
@@ -31,23 +34,22 @@ def common():
 def pytest_runtest_setup(item):
     # Skip integration tests by default
     allow_integration_tests = item.config.getoption("integration")
-    if item.get_closest_marker('integration') and not allow_integration_tests:
-        pytest.skip("integration test requires --integration option")
+    run_integration_only = item.config.getoption("integration_only")
 
+    is_integration_test = item.get_closest_marker('integration')
 
-@pytest.fixture(autouse=True)
-def socket_check(request):
-    """
-    Block socket cipfalls unless integration test
-    """
-    is_integration_test = request.node.get_closest_marker('integration')
-    if not is_integration_test:
-        # dynamically inject fixture
-        request.getfixturevalue('socket_disabled')
+    if is_integration_test and not (allow_integration_tests or run_integration_only):
+        # Integration tests can run either when --integration or --integration-only
+        pytest.skip()
+
+    if not is_integration_test and run_integration_only:
+        # Skip other tests --integration-only
+        pytest.skip()
 
 
 @pytest.fixture(scope='session')
 def testdatabase(testdatabase_factory):
+    # testdatabase_factory comes from alvin-python-lib
     _testdatabase = testdatabase_factory(base, config.DATABASE_URL)
     yield from _testdatabase
 
@@ -82,3 +84,19 @@ def config_override():
     for k, v in orig_values.items():
         setattr(config, k, v)
     config._values = orig_values
+
+
+@pytest.fixture(autouse=True)
+def default_mocks(
+    request,
+):
+    """
+    Do specific things for unit-tests vs integration tests
+    - Block socket cipfalls unless integration test
+    - Allow socket API calls
+    """
+    is_integration_test = bool(request.node.get_closest_marker('integration'))
+
+    # dynamically inject fixtures
+    if not is_integration_test:
+        request.getfixturevalue('socket_disabled')
