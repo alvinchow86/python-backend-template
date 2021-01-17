@@ -10,6 +10,7 @@ class Base(Configuration):
 
     DOMAIN = Value('alvinchow.localdev')
     SESSION_COOKIE_DOMAIN = Value()
+    SESSION_COOKIE_NAME = Value('session_id')
     SESSION_COOKIE_SECURE = BooleanValue(False)
     CSRF_COOKIE_DOMAIN = Value()
     CSRF_ENABLED = BooleanValue(True)

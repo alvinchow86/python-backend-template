@@ -9,8 +9,7 @@ from alvinchow_backend.app.flask.session import RedisSessionInterface
 from alvinchow_backend.app.monitoring import initialize_sentry
 
 from alvinchow_backend.db import get_session
-# from alvinchow_backend.web import web
-from alvinchow_backend.api.rest import exceptions
+from alvinchow_backend.lib.web import exceptions
 from alvinchow_backend.lib import get_logger
 
 logger = get_logger(__name__)
@@ -33,7 +32,7 @@ def create_app():
 
     app.config['SESSION_COOKIE_NAME'] = 'session_id'
 
-    @app.errorhandler(exceptions.APIException)
+    @app.errorhandler(exceptions.ApiException)
     def handle_invalid_usage(error):
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
