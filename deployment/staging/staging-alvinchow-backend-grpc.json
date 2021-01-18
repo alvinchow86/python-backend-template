@@ -1,0 +1,46 @@
+{
+  "family": "staging-alvinchow-backend-grpc",
+  "executionRoleArn": "arn:aws:iam::something:role/staging-ecs-task-execution",
+  "taskRoleArn": "arn:aws:iam::something:role/staging-alvinchow-backend",
+  "containerDefinitions": [
+    {
+      "name": "alvinchow-backend-grpc",
+      "image": "something.dkr.ecr.us-east-2.amazonaws.com/staging-alvinchow-backend:latest",
+      "memoryReservation": 512,
+      "portMappings": [
+        {
+          "containerPort": 50051,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ],
+      "command": [
+        "/home/app/entrypoint/run-grpc.sh"
+      ],
+      "environment": [
+        {
+          "name": "APP_ENV",
+          "value": "staging"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "/staging/alvinchow-backend/DATABASE_URL"
+        },
+        {
+          "name": "REDIS_URL",
+          "valueFrom": "/staging/alvinchow-backend/REDIS_URL"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "json-file"
+      }
+    }
+  ],
+  "cpu": "512",
+  "memory": "512",
+  "requiresCompatibilities": [
+    "EC2"
+  ]
+}

@@ -1,0 +1,22 @@
+{% extends "buildspec_base.yml" %}
+
+{% block docker_image%}staging-alvinchow-backend{% endblock %}
+
+{% block deploy_commands %}
+      - |
+        if [ -z "$NO_MIGRATE" ]; then
+          aws ecs register-task-definition --cli-input-json file://deployment/staging/staging-alvinchow-backend-migration.json
+          aws ecs run-task --cluster staging --task-definition staging-alvinchow-backend-migration
+        fi
+
+      - aws ecs register-task-definition --cli-input-json file://deployment/staging/staging-alvinchow-backend-web.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/staging/staging-alvinchow-backend-grpc.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/staging/staging-alvinchow-backend-worker.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/staging/staging-alvinchow-backend-scheduler.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/staging/staging-alvinchow-backend-admin.json
+      - aws ecs update-service --cluster staging --service alvinchow-backend-web --task-definition staging-alvinchow-backend-web
+      - aws ecs update-service --cluster staging --service alvinchow-backend-grpc --task-definition staging-alvinchow-backend-grpc
+      - aws ecs update-service --cluster staging --service alvinchow-backend-worker --task-definition staging-alvinchow-backend-worker
+      - aws ecs update-service --cluster staging --service alvinchow-backend-scheduler --task-definition staging-alvinchow-backend-scheduler
+      - aws ecs update-service --cluster admin --service staging-alvinchow-backend-admin --task-definition staging-alvinchow-backend-admin --deployment-configuration maximumPercent=100,minimumHealthyPercent=0
+{% endblock %}

@@ -19,3 +19,9 @@ buildproto:
 proto: buildproto
 	mkdir -p dist && \
 	cp -r alvinchow_backend/api/grpc/dist/*.tar.gz dist
+
+taskdefs:
+	cd deployment && ./compile.py taskdefs
+
+buildspecs:
+	cd deployment && ./compile.py buildspecs
