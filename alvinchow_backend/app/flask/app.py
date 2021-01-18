@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 
 from scout_apm.flask import ScoutApm
@@ -32,7 +32,11 @@ def create_app():
 
     common_app_setup(app)
 
+    # Handle user sessions
     app.before_request(process_user_from_session)
+
+    # Register csrf everywhere
+    register_csrf(app, exclude_url_pattern=CSRF_EXCLUDE_PATTERN)
 
     # Register blueprints/views
     app.register_blueprint(api, url_prefix='/api')
@@ -42,9 +46,6 @@ def create_app():
         '/api/graphql',
         view_func=create_graphql_view()
     )
-
-    # Register csrf everywhere
-    register_csrf(app, exclude_url_pattern=CSRF_EXCLUDE_PATTERN)
 
     return app
 
