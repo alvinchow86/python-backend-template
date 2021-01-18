@@ -6,3 +6,4 @@ omit =
     alvinchow_backend/api/grpc/setup*.py
     */test_*.py
     *version*.py
+    alvin-grpc-py/*
