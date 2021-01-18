@@ -4,11 +4,11 @@ from alvinchow_backend.app import config
 from alvinchow_backend.web import web
 from alvinchow_backend.lib.web.decorators import login_required
 from alvinchow_backend.lib.web.user import get_current_user, login_user
-from alvinchow_backend.service.authentication.login import authenticate_user_with_credentials
+from alvinchow_backend.lib.web.exceptions import BadRequestError
+from alvinchow_backend.service.authentication import authenticate_user_with_credentials, AuthenticationError
 
 
 if not config.PRODUCTION:
-    print('hi')
     @web.route('/dev/login', methods=['GET', 'POST'])
     def login(email=None):
         user = get_current_user()
@@ -17,7 +17,10 @@ if not config.PRODUCTION:
             email = request.form['email']
             password = request.form['password']
 
-            user = authenticate_user_with_credentials(email, password)
+            try:
+                user = authenticate_user_with_credentials(email, password)
+            except AuthenticationError:
+                raise BadRequestError('Incorrect credentials')
             login_user(user)
 
             return redirect('/dev/home')
