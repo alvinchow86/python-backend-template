@@ -5,5 +5,7 @@ exclude =
   alembic
   alvinchow_backend_protobuf
   alvinchow_backend/api/grpc/alvinchow_backend_protobuf_async
+  alvin-grpc-py
+  alvin-python-lib
 
 max-line-length = 120
