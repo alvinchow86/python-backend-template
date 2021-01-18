@@ -14,6 +14,7 @@ class Base(Configuration):
     SESSION_COOKIE_SECURE = BooleanValue(False)
     CSRF_COOKIE_DOMAIN = Value()
     CSRF_ENABLED = BooleanValue(True)
+    CORS_SUPPORT_CREDENTIALS = BooleanValue(False)
 
     ROOT_DOMAIN = Value('alvinchow.localdev')
 
@@ -70,7 +71,12 @@ class DevelopmentTestingBase(Base):
 
 class Development(DevelopmentTestingBase):
     ENV_TYPE = 'development'
+
+    REQUIRE_STRONG_PASSWORDS = BooleanValue(False)
+    CORS_SUPPORT_CREDENTIALS = BooleanValue(True)
+    CSRF_ENABLED = BooleanValue(False)
     DEVELOPMENT = True
+    CORS_SUPPORT_CREDENTIALS = BooleanValue(True)
 
 
 class Testing(DevelopmentTestingBase):
@@ -96,6 +102,9 @@ class Production(Deployed):
     ENV = Value('production')
     PRODUCTION = True
     DEBUG_SQL = False
+
+    CSRF_ENABLED = True
+    CORS_SUPPORT_CREDENTIALS = False
 
 
 app_env = os.environ.get("APP_ENV", 'development')
