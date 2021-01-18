@@ -72,53 +72,9 @@ It can become cumbersome to make a separate "repo" for every model, I will usual
 Common utilities and helpers that may be useful for different services are put in a shared library (see below).
 
 ## How to Use
+This is not a framework but a template. You will want to rename a bunch of folders and names, but I have made this easy but calling them something unique like "alvinchow".
 
-### Rename Folders and Paths
-This is not a framework but a template. You will want to rename a bunch of folders and names, but I have made htis easy but calling them something unique like "alvinchow".
-
-Decide on a top-level package name. It might be something like `<ORG_NAME>_backend` or `<ORG_NAME>_<user>` (if you were building a "user" microservice).
-
-1. Copy this project to a new folder
-2. Global text-replace `alvinchow_backend` to `<PACKAGE_NAME>`
-3. Rename `alvinchow_backend` folder to `<PACKAGE_NAME`
-4. (if using gRPC) Rename protobuf folders `alvinchow_backend_protobuf` and `api/grpc/protobuf/src/alvinchow_backend_protobuf` to something else.
-4. Global text-replace `alvinchow-backend` with something else (e.g. `user-service`)
-5. In `docker-compose.yml`, replace the text `alvinchow`
-
-### Companion Libraries
-By default, this template requires close integration with companion libraries. Currently these are installed as git submodules.
-
-**alvin-python-lib** (https://github.com/alvinchow86/alvin-python-lib):
-- Env-var app configuration
-- Base exception classes
-- Redis cache and SQLAlchemy helpers
-
-**alvin-grpc-py** (https://github.com/alvinchow86/alvin-grpc-py) (only if using gRPC):
-- Some useful gRPC utilities
-
-Copy these libraries and rename as appropriate (grep for the words `alvin` and `alvinchow` and replace with your org name or something). You can then either build and distribute these on a private PyPi server, or just link these libraries as top-level Git submodules in this project.
-
-This pattern is mostly useful if you plan to have multiple backend apps (microservices) - if you only have one, monolithic app, it might be less useful. In that case just fold the library modules into this codebase.
-
-### Delete Unused Stuff
-As mentioned earlier, this template is a kitchen sink of features but most likely you won't need everything. You should delete the code and dependencies you don't need. Take a look at the code, Pipfile and Dockerfile.
-
-Here are some feature categories and things you might want to remove if not being used.
-
-#### Web
-- Pipfile: `flask`, `graphene`, `graphql-server`
-- Dockerfile: uwsgi, nginx
-- api/flask
-- app/flask
-
-#### Auth
-- Pipfile: `passlib`, `argon2`
-
-#### gRPC
-- Pipfile: `Cython`, `grpcio*`, `protobuf`, `alvin-grpc-lib`
-- protobuf folder
-- api/grpc
-
+See https://github.com/alvinchow86/python-backend-template/wiki/How-to-Use for more detailed instructions on how to use this template.
 
 ## Folder Structure
 
