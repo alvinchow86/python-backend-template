@@ -1,27 +1,40 @@
 version: 2.1
 
+parameters:
+  run_integration_tests:
+    type: boolean
+    default: false
+
+  run_unit_tests:
+    type: boolean
+    default: true
+
+
 executors:
   app:
-    working_directory: ~/app
+    working_directory: /mnt/ramdisk
     docker:
-      - image: circleci/python:3.8.1
+      - image: circleci/python:3.9
         environment:
          PIPENV_VENV_IN_PROJECT: true
          DATABASE_URL: postgres://root:@localhost/alvinchow_backend_test
          REDIS_URL: redis://localhost:6379
 
-      - image: circleci/postgres:11-alpine-ram
+      - image: circleci/postgres:12-alpine-ram
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: alvinchow_backend_test
-      - image: circleci/redis:5.0.3
+      - image: circleci/redis:6-alpine
 
 
 commands:
-  unit_tests_build:
+  build:
     description: "Install and build the app, anything common for all unit test runs"
     steps:
       - checkout  # checkout source code to working directory
+      - run:
+          name: Install submodules
+          command: git submodule update --init
       - run:
           name: Install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -36,17 +49,21 @@ commands:
 
       - restore_cache:
           keys:
-            - pip-packages-v1-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-            - pip-packages-v1-{{ .Branch }}-
-            - pip-packages-v1-
+            - pip-packages-v1-{{ checksum "Pipfile.lock" }}
       - run:
           name: Install dependencies
           command: |
             pipenv sync --dev
+            source /mnt/ramdisk/.venv/bin/activate
+            pip install -e alvin-python-lib -e alvin-grpc-py -e .
       - save_cache:
           paths:
-            - ~/app/.venv
-          key: pip-packages-v3-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            - /mnt/ramdisk/.venv
+          key: pip-packages-v1-{{ checksum "Pipfile.lock" }}
+
+
+  lint:
+    steps:
       - run:
           name: Linting
           command:
@@ -57,31 +74,41 @@ jobs:
   unit-tests:
     executor: app
     steps:
-      - unit_tests_build
+      - build
+      - lint
       - run:
-          name: Run tests
+          name: Run unit tests
           command: |
-              pipenv run python runtests.py --coverage
+            pipenv run python runtests.py --coverage
 
-  unit-tests-with-coverage-html:
+  unit-tests-with-cov-html:
     executor: app
     steps:
-      - unit_tests_build
+      - build
+      - lint
       - run:
-          name: Run tests
+          name: Run unit tests with coverage html
           command: |
               pipenv run python runtests.py --coverage-html
-              pipenv run coverage-badge -o coverage.svg
+              # pipenv run coverage-badge -o coverage.svg
       - store_artifacts:
-          path: ~/app/htmlcov
-      - store_artifacts:
-          path: ~/app/coverage.svg
+          path: /mnt/ramdisk/htmlcov
+      # - store_artifacts:
+      #     path: ~/app/coverage.svg
 
-
+  integration-tests:
+    executor: app
+    steps:
+      - build
+      - run:
+          name: Run integration tests
+          command: |
+              pipenv run python runtests.py --integration-only -vs
 
 workflows:
   version: 2
-  test:
+  unit-tests:
+    when: << pipeline.parameters.run_unit_tests >>
     jobs:
       # Run normal tests for normal branches
       - unit-tests:
@@ -89,9 +116,14 @@ workflows:
             branches:
               ignore: master
 
-      # Also generate HTML coverage report for master commits
-      - unit-tests-with-coverage-html:
+      # Also run integration tests generate HTML coverage report for master commits
+      - unit-tests-with-cov-html:
           filters:
             branches:
               only:
                 - master
+
+  integration-tests:
+    when: << pipeline.parameters.run_integration_tests >>
+    jobs:
+      - integration-tests
