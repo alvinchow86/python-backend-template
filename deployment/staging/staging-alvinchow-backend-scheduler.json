@@ -1,0 +1,40 @@
+{
+  "family": "staging-alvinchow-backend-scheduler",
+  "executionRoleArn": "arn:aws:iam::something:role/staging-ecs-task-execution",
+  "taskRoleArn": "arn:aws:iam::something:role/staging-alvinchow-backend",
+  "containerDefinitions": [
+    {
+      "name": "alvinchow-backend-scheduler",
+      "image": "something.dkr.ecr.us-east-2.amazonaws.com/staging-alvinchow-backend:latest",
+      "memoryReservation": 256,
+      "portMappings": [],
+      "command": [
+        "/home/app/entrypoint/run-scheduler.sh"
+      ],
+      "environment": [
+        {
+          "name": "APP_ENV",
+          "value": "staging"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "/staging/alvinchow-backend/DATABASE_URL"
+        },
+        {
+          "name": "REDIS_URL",
+          "valueFrom": "/staging/alvinchow-backend/REDIS_URL"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "json-file"
+      }
+    }
+  ],
+  "cpu": "256",
+  "memory": "256",
+  "requiresCompatibilities": [
+    "EC2"
+  ]
+}

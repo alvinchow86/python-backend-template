@@ -1,0 +1,40 @@
+{
+  "family": "prod-alvinchow-backend-admin",
+  "executionRoleArn": "arn:aws:iam::something:role/prod-ecs-task-execution",
+  "taskRoleArn": "arn:aws:iam::role:role/prod-alvinchow-backend",
+  "containerDefinitions": [
+    {
+      "name": "alvinchow-backend-admin",
+      "image": "something.dkr.ecr.us-east-2.amazonaws.com/alvinchow-backend:latest",
+      "memoryReservation": 512,
+      "portMappings": [],
+      "command": [
+        "/home/app/entrypoint/run-admin.sh"
+      ],
+      "environment": [
+        {
+          "name": "APP_ENV",
+          "value": "production"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "/production/alvinchow-backend/DATABASE_URL"
+        },
+        {
+          "name": "REDIS_URL",
+          "valueFrom": "/production/alvinchow-backend/REDIS_URL"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "json-file"
+      }
+    }
+  ],
+  "cpu": "512",
+  "memory": "512",
+  "requiresCompatibilities": [
+    "EC2"
+  ]
+}

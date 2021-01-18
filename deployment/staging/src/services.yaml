@@ -1,0 +1,50 @@
+execution_role: arn:aws:iam::something:role/staging-ecs-task-execution
+task_role: arn:aws:iam::something:role/staging-alvinchow-backend
+image: something.dkr.ecr.us-east-2.amazonaws.com/staging-alvinchow-backend:latest
+services:
+  -
+    file: staging-alvinchow-backend-web.json
+    family: staging-alvinchow-backend-web
+    container_name: alvinchow-backend-web
+    command: /home/app/entrypoint/run-web.sh
+    cpu: 512
+    memory: 512
+    ports:
+      - 80
+  -
+    file: staging-alvinchow-backend-grpc.json
+    family: staging-alvinchow-backend-grpc
+    container_name: alvinchow-backend-grpc
+    command: /home/app/entrypoint/run-grpc.sh
+    cpu: 512
+    memory: 512
+    ports:
+      - 50051
+  -
+    file: staging-alvinchow-backend-worker.json
+    family: staging-alvinchow-backend-worker
+    container_name: alvinchow-backend-worker
+    command: /home/app/entrypoint/run-worker.sh
+    cpu: 256
+    memory: 512
+  -
+    file: staging-alvinchow-backend-scheduler.json
+    family: staging-alvinchow-backend-scheduler
+    container_name: alvinchow-backend-scheduler
+    command: /home/app/entrypoint/run-scheduler.sh
+    cpu: 256
+    memory: 256
+  -
+    file: staging-alvinchow-backend-admin.json
+    family: staging-alvinchow-backend-admin
+    container_name: alvinchow-backend-admin
+    command: /home/app/entrypoint/run-admin.sh
+    cpu: 512
+    memory: 512
+  -
+    file: staging-alvinchow-backend-migration.json
+    family: staging-alvinchow-backend-migration
+    container_name: alvinchow-backend-migration
+    command: /home/app/entrypoint/run-migration.sh
+    cpu: 256
+    memory: 512

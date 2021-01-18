@@ -1,0 +1,46 @@
+version: 0.2
+
+env:
+  variables:
+    GIT_URL: "git@github.com:alvinchow86/python-backend-template.git"
+    DOCKER_REPO: "something.dkr.ecr.us-east-2.amazonaws.com/alvinchow-backend"
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin something.dkr.ecr.us-east-2.amazonaws.com
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - docker pull $DOCKER_REPO:latest || true
+  build:
+    commands:
+      - docker build --cache-from $DOCKER_REPO:latest -t $DOCKER_REPO:latest .
+      - docker tag $DOCKER_REPO:latest $DOCKER_REPO:$IMAGE_TAG
+  post_build:
+    commands:
+      - docker push $DOCKER_REPO:$IMAGE_TAG
+      - docker push $DOCKER_REPO:latest
+
+      
+      - |
+        if [ -z "$NO_MIGRATE" ]; then
+          aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-migration.json
+          aws ecs run-task --cluster production --task-definition prod-alvinchow-backend-migration
+        fi
+
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-web.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-grpc.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-worker.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-scheduler.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-admin.json
+
+      - |
+        if [ -z "$ADMIN_ONLY" ]; then
+          aws ecs update-service --cluster production --service alvinchow-backend-web --task-definition prod-alvinchow-backend-web
+          aws ecs update-service --cluster production --service alvinchow-backend-grpc --task-definition prod-alvinchow-backend-grpc
+          aws ecs update-service --cluster production --service alvinchow-backend-worker --task-definition prod-alvinchow-backend-worker
+          aws ecs update-service --cluster production --service alvinchow-backend-scheduler --task-definition prod-alvinchow-backend-scheduler --deployment-configuration maximumPercent=100,minimumHealthyPercent=0
+        fi
+
+      - aws ecs update-service --cluster admin --service prod-alvinchow-backend-admin --task-definition prod-alvinchow-backend-admin --deployment-configuration maximumPercent=100,minimumHealthyPercent=0
+

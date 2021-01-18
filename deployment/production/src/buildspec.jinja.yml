@@ -1,0 +1,25 @@
+{% extends "buildspec_base.yml" %}
+
+{% block deploy_commands %}
+      - |
+        if [ -z "$NO_MIGRATE" ]; then
+          aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-migration.json
+          aws ecs run-task --cluster production --task-definition prod-alvinchow-backend-migration
+        fi
+
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-web.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-grpc.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-worker.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-scheduler.json
+      - aws ecs register-task-definition --cli-input-json file://deployment/production/prod-alvinchow-backend-admin.json
+
+      - |
+        if [ -z "$ADMIN_ONLY" ]; then
+          aws ecs update-service --cluster production --service alvinchow-backend-web --task-definition prod-alvinchow-backend-web
+          aws ecs update-service --cluster production --service alvinchow-backend-grpc --task-definition prod-alvinchow-backend-grpc
+          aws ecs update-service --cluster production --service alvinchow-backend-worker --task-definition prod-alvinchow-backend-worker
+          aws ecs update-service --cluster production --service alvinchow-backend-scheduler --task-definition prod-alvinchow-backend-scheduler --deployment-configuration maximumPercent=100,minimumHealthyPercent=0
+        fi
+
+      - aws ecs update-service --cluster admin --service prod-alvinchow-backend-admin --task-definition prod-alvinchow-backend-admin --deployment-configuration maximumPercent=100,minimumHealthyPercent=0
+{% endblock %}

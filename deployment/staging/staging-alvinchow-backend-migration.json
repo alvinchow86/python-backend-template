@@ -1,0 +1,40 @@
+{
+  "family": "staging-alvinchow-backend-migration",
+  "executionRoleArn": "arn:aws:iam::something:role/staging-ecs-task-execution",
+  "taskRoleArn": "arn:aws:iam::something:role/staging-alvinchow-backend",
+  "containerDefinitions": [
+    {
+      "name": "alvinchow-backend-migration",
+      "image": "something.dkr.ecr.us-east-2.amazonaws.com/staging-alvinchow-backend:latest",
+      "memoryReservation": 512,
+      "portMappings": [],
+      "command": [
+        "/home/app/entrypoint/run-migration.sh"
+      ],
+      "environment": [
+        {
+          "name": "APP_ENV",
+          "value": "staging"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "/staging/alvinchow-backend/DATABASE_URL"
+        },
+        {
+          "name": "REDIS_URL",
+          "valueFrom": "/staging/alvinchow-backend/REDIS_URL"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "json-file"
+      }
+    }
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "requiresCompatibilities": [
+    "EC2"
+  ]
+}
