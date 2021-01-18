@@ -197,3 +197,6 @@ To run tests, do `runtests.py` or `runtests`.
 
 ## Additional Documentation
 See the [repo wiki](https://github.com/alvinchow86/python-backend-template/wiki) for additional documentation
+
+## CI Status
+[![<alvinchow86>](https://circleci.com/gh/alvinchow86/python-backend-template.svg?style=svg)](<https://app.circleci.com/pipelines/github/alvinchow86/python-backend-template>)
