@@ -86,7 +86,7 @@ Decide on a top-level package name. It might be something like `<ORG_NAME>_backe
 5. In `docker-compose.yml`, replace the text `alvinchow`
 
 ### Companion Libraries
-By default, this template requires close integration with companion libraries:
+By default, this template requires close integration with companion libraries. Currently these are installed as git submodules.
 
 **alvin-python-lib** (https://github.com/alvinchow86/alvin-python-lib):
 - Env-var app configuration

@@ -1,6 +1,6 @@
 from alvinchow_backend.app import config
 from alvinchow_backend.db.repository import user_repo
-from alvinchow_backend.authentication.password import hash_password, check_password_strength
+from alvinchow_backend.service.authentication.password import hash_password, check_password_strength
 from alvinchow.lib.dates import utcnow
 
 

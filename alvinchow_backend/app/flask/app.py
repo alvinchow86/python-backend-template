@@ -5,12 +5,14 @@ from alvinchow_backend.api.rest import api
 from alvinchow_backend.app import config
 from alvinchow_backend.app import initialize
 from alvinchow_backend.app.flask.csrf import register_csrf
+from alvinchow_backend.app.flask.middleware import process_user_from_session
 from alvinchow_backend.app.flask.session import RedisSessionInterface
 from alvinchow_backend.app.monitoring import initialize_sentry
 
 from alvinchow_backend.db import get_session
 from alvinchow_backend.lib.web import exceptions
 from alvinchow_backend.lib import get_logger
+from alvinchow_backend.web import web
 
 logger = get_logger(__name__)
 
@@ -28,9 +30,11 @@ def create_app():
     app.session_interface = RedisSessionInterface()
 
     app.register_blueprint(api, url_prefix='/api')
-    # app.register_blueprint(web)
+    app.register_blueprint(web)
 
     app.config['SESSION_COOKIE_NAME'] = 'session_id'
+
+    app.before_request(process_user_from_session)
 
     @app.errorhandler(exceptions.ApiException)
     def handle_invalid_usage(error):
