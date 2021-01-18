@@ -194,3 +194,6 @@ pytest is uses for tests. Follow standard pytest conventions to make test files 
 There is a Postgres test database, which is reset between tests, using nested transactions for fast test speed. If your test accesses the database, add a fixture dependency called `db`
 
 To run tests, do `runtests.py` or `runtests`.
+
+## Additional Documentation
+See the [repo wiki](https://github.com/alvinchow86/python-backend-template/wiki) for additional documentation
