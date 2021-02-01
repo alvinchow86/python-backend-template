@@ -95,9 +95,6 @@ See https://github.com/alvinchow86/python-backend-template/wiki/How-to-Use for m
 ### `lib/`
 - Helper code that is specific to this application
 
-### `lib/`
-- Helper code that is specific to this application
-
 ### `remote/`
 - Put code related to accessing other microservices (e.g. abstraction clients) or vendor APIs
 
