@@ -38,7 +38,7 @@ graphql-server = "==3.0.0b3"
 # Queueing
 celery = {extras = ["redis"],version = "==5.0.1"}
 # Auth/security (if using user-login)
-cryptography = "==3.3.1"
+cryptography = "==3.3.2"
 passlib = "==1.7.4"
 argon2-cffi = "==20.1.0"
 # gRPC
