@@ -34,6 +34,7 @@ sqlalchemy-postgres-bigint-id = "==0.2.0"
 flask = "==1.1.2"
 flask-cors = "==3.0.7"
 graphene = "==3.0"
+graphql-server = "==3.0.0b4"
 # Queueing
 celery = {extras = ["redis"],version = "==5.0.1"}
 # Auth/security (if using user-login)

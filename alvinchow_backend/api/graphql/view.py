@@ -1,5 +1,5 @@
 from easydict import EasyDict
-from graphql_server.flask import GraphQLView as GraphQLView
+from graphql_server.flask import GraphQLView
 
 from alvinchow_backend.api.graphql.schema import schema
 from alvinchow_backend.lib.web.user import get_current_user
